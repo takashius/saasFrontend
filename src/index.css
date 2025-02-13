@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados para el modo oscuro */
+body.dark {
+  background-color: #1a1a1a; /* bg-gray-900 */
+}
+
+body.dark .text-white {
+  color: #d1d5db; /* text-gray-300 */
+}
+
+body.dark .bg-white {
+  background-color: #1f2937; /* bg-gray-800 */
+}
+
+/* Estilos generales */
+body {
+  @apply bg-gray-100 dark:bg-gray-900;
+}

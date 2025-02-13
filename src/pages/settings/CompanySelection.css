@@ -1,0 +1,13 @@
+.custom-radio .ant-radio-inner {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px; /* Cambia de redondo a cuadrado */
+  border: 2px solid #1890ff;
+}
+
+.custom-radio .ant-radio-inner::after {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px; /* Cambia de redondo a cuadrado */
+  background-color: #1890ff;
+}
