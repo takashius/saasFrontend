@@ -1,17 +1,51 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, Input, Button } from 'antd'
-import { Link } from 'react-router-dom'
+import { Form, Input, Button, message } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { useRegister } from '../../api/auth'
 
 const Register: React.FC = () => {
   const { t } = useTranslation()
+  const registerMutate = useRegister()
+  const navigate = useNavigate()
+  const [messageApi, contextHolder] = message.useMessage()
 
   const onFinish = (values: any) => {
-    console.log('Success:', values)
+    registerMutate.mutate(values)
   }
+
+  useEffect(() => {
+    if (registerMutate.isSuccess) {
+      localStorage.setItem('registerSuccess', 'true')
+      navigate('/login')
+    }
+  }, [registerMutate.isSuccess])
+
+  useEffect(() => {
+    if (registerMutate.error) {
+      let errorMessage: string = ''
+
+      if (typeof registerMutate.error === 'string') {
+        errorMessage = registerMutate.error
+      } else if (registerMutate.error instanceof Error) {
+        errorMessage = registerMutate.error.message
+      } else if (typeof registerMutate.error === 'object' && registerMutate.error !== null) {
+        const errorObject = registerMutate.error as Record<string, string>
+        const firstErrorKey = Object.keys(errorObject)[0]
+        errorMessage = errorObject[firstErrorKey]
+      }
+
+      messageApi.open({
+        type: 'error',
+        content: `${errorMessage}`,
+      });
+    }
+  }, [registerMutate.error, messageApi])
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      {contextHolder}
       <div className="bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-lg">
         <div className="flex justify-center mb-6">
           <img
@@ -72,7 +106,7 @@ const Register: React.FC = () => {
             <Input placeholder={t('register.companyName')} />
           </Form.Item>
           <Form.Item
-            name="rif"
+            name="docId"
             rules={[{ required: true, message: t('register.rifRequired') }]}
           >
             <Input placeholder={t('register.rif')} />
@@ -80,7 +114,7 @@ const Register: React.FC = () => {
 
           <Form.Item>
             <div className="flex space-x-2">
-              <Button type="primary" htmlType="submit" className="w-1/2">
+              <Button type="primary" htmlType="submit" loading={registerMutate.isPending} className="w-1/2">
                 {t('register.register')}
               </Button>
               <div className="w-1/2">

@@ -32,6 +32,17 @@ const Login: React.FC = () => {
   }
 
   useEffect(() => {
+    const successRegister = localStorage.getItem('registerSuccess')
+    if (successRegister === 'true') {
+      messageApi.open({
+        type: 'success',
+        content: t('register.registerSuccess'),
+      })
+      localStorage.removeItem('registerSuccess')
+    }
+  }, [])
+
+  useEffect(() => {
     if (loginQuery.isSuccess) {
       login(loginQuery.data)
       navigate('/')

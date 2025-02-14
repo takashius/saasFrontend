@@ -72,10 +72,11 @@ export const useLogout = () => {
   })
 }
 
-export const useRegister = () => {
-  return useMutation({
-    mutationFn: (data: Register) => {
-      return ERDEAxios.post('/user/register', data)
+export const useRegister = (): UseMutationResult<any, unknown, Register> => {
+  return useMutation<any, unknown, Register>({
+    mutationFn: async (data: Register) => {
+      const response = await ERDEAxios.post('/user/register', data)
+      return response.data
     }
   })
 }

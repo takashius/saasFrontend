@@ -47,7 +47,8 @@
     "rif": "RIF",
     "rifRequired": "Please enter the RIF!",
     "register": "Register",
-    "backToLogin": "Back to Login"
+    "backToLogin": "Back to Login",
+    "registerSuccess": "Registration successful! You can now log in with your details."
   },
   "recoverPassword": {
     "title": "Recover Password",
