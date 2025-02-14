@@ -240,5 +240,14 @@
       "cyan": "Cian",
       "gray": "Gris"
     }
+  },
+  "ProfileSettings": {
+    "base": "Datos Basicos",
+    "imageTitle": "Imagenes",
+    "photo": "Foto",
+    "profile": "Perfil",
+    "bio": "Biografia",
+    "address": "Dirección",
+    "password": "Cambiar contraseña"
   }
 }

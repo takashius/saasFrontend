@@ -27,7 +27,7 @@ const UserMenu = () => {
   return (
     <Menu>
       <Menu.Item key="1">
-        <Link to="/users">{t('menu.profile')}</Link>
+        <Link to="/settings/profile">{t('menu.profile')}</Link>
       </Menu.Item>
       <Menu.Item key="2" onClick={handleLogout}>
         {t('menu.logout')}

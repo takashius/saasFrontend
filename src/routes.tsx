@@ -15,6 +15,7 @@ import EmailSettings from './pages/settings/EmailSettings'
 import CompanySelection from './pages/settings/CompanySelection'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
+import ProfileSettings from './pages/settings/ProfileSettings'
 
 export const routes = [
   {
@@ -38,6 +39,7 @@ export const routes = [
       { path: 'pdf', element: <PDFSettings />, protected: true },
       { path: 'email', element: <EmailSettings />, protected: true },
       { path: 'company', element: <CompanySelection />, protected: true },
+      { path: 'profile', element: <ProfileSettings />, protected: true },
     ]
   },
   {
