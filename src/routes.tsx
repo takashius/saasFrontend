@@ -1,13 +1,11 @@
 import Layout from './components/Layout'
 import RootAuth from './components/RootAuth'
 import Error404 from './pages/Error404'
-import Home from './pages/Home'
 import Users from './pages/Users'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import RecoverPassword from './pages/auth/RecoverPassword'
 import RecoveryStep2 from './pages/auth/RecoveryStep2'
-import QuotationDetails from './pages/QuotationDetails'
 import ClientList from './pages/ClientList'
 import ProductList from './pages/ProductList'
 import ClientDetail from './pages/ClientDetail'
@@ -16,6 +14,7 @@ import PDFSettings from './pages/settings/PDFSettings'
 import EmailSettings from './pages/settings/EmailSettings'
 import CompanySelection from './pages/settings/CompanySelection'
 import ProtectedRoute from './components/ProtectedRoute'
+import Dashboard from './pages/Dashboard'
 
 export const routes = [
   {
@@ -23,9 +22,8 @@ export const routes = [
     element: <Layout />,
     errorElement: <Error404 />,
     children: [
-      { path: '/', element: <Home />, protected: true },
+      { path: '/', element: <Dashboard />, protected: true },
       { path: '/users', element: <Users />, protected: true },
-      { path: '/quotation/:id', element: <QuotationDetails />, protected: true },
       { path: '/clients', element: <ClientList />, protected: true },
       { path: '/client/:id', element: <ClientDetail />, protected: true },
       { path: '/products', element: <ProductList />, protected: true },

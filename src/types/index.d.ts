@@ -14,23 +14,6 @@ export interface Customer {
   lastname: string
 }
 
-export interface Quotation {
-  created: Created
-  _id: string
-  title: string
-  description: string
-  status: string
-  number: number
-  sequence: number
-  amount: number
-  date: string
-  company: string
-  customer: Customer
-  rate: number
-  discount: number
-  typeDiscount: string
-}
-
 export interface User {
   _id: string
   name: string
@@ -77,29 +60,6 @@ export interface CustomerDetail {
   email: string
   phone: string
   addresses: Address[]
-}
-
-export interface QuotationDetail {
-  created: {
-    user: User
-    date: string
-  }
-  _id: string
-  title: string
-  description: string
-  status: string
-  number: number
-  sequence: number
-  amount: number
-  date: string
-  company: Company
-  customer: CustomerDetail
-  rate: number
-  discount: number
-  typeDiscount: string
-  products: Product[]
-  totalIva: number
-  total: number
 }
 
 export interface Client {
@@ -246,32 +206,4 @@ export interface ConfigPDF {
 export interface Correlative {
   manageInvoiceCorrelative: boolean
   invoice: number
-}
-
-// Tipos necesarios para moneyFlow
-export interface MoneyFlow {
-  created: CreatedExtend
-  _id: string
-  title: string
-  amount: number
-  type: 'income' | 'expense'
-  category: MoneyFlowCategory
-  company: string
-}
-
-export interface MoneyFlowCategory {
-  _id?: string
-  name: string
-}
-
-export interface NewMoneyFlow {
-  title: string
-  amount: number
-  type: 'income' | 'expense'
-  category: string
-  cotiza: string
-}
-
-export interface UpdateMoneyFlow extends NewMoneyFlow {
-  id: string
 }
