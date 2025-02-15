@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [isProductOpen, setIsProductOpen] = useState(false);
   const { t } = useTranslation();
   const { getUser } = useAuth();
   const user: any = getUser();
@@ -16,12 +17,15 @@ const Sidebar = () => {
   const currentColor = getColorFromLocalStorage();
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+    setIsSidebarOpen(!isSidebarOpen)
+  }
 
   const toggleConfigMenu = () => {
-    setIsConfigOpen(!isConfigOpen);
-  };
+    setIsConfigOpen(!isConfigOpen)
+  }
+  const toggleProductMenu = () => {
+    setIsProductOpen(!isProductOpen)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,7 +59,10 @@ const Sidebar = () => {
   };
 
   const isSettingsActive = () => {
-    return location.pathname.startsWith('/settings');
+    return location.pathname.startsWith('/settings')
+  };
+  const isProductActive = () => {
+    return location.pathname.startsWith('/products') || location.pathname.startsWith('/categories')
   };
 
   useEffect(() => {
@@ -63,6 +70,12 @@ const Sidebar = () => {
       setIsConfigOpen(true);
     } else {
       setIsConfigOpen(false);
+    }
+
+    if (isProductActive()) {
+      setIsProductOpen(true);
+    } else {
+      setIsProductOpen(false);
     }
   }, [location.pathname]);
 
@@ -113,17 +126,60 @@ const Sidebar = () => {
               </Link>
             </li>
             <li>
-              <Link
-                to="/products"
-                className={`flex items-center p-2 text-white rounded-lg ${currentColor.hover} 
-                ${isActive('/products') ? currentColor.menuActive : currentColor.bg} 
-                ${isActive('/products') ? 'dark:bg-gray-700' : 'dark:bg-gray-800'}
-                dark:hover:bg-gray-700 group`}
-                onClick={() => setIsSidebarOpen(false)}
+              <button
+                type="button"
+                className={`flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group ${currentColor.hover} 
+                ${currentColor.bg} dark:bg-gray-800 dark:hover:bg-gray-700`}
+                onClick={toggleProductMenu}
               >
                 <ShoppingOutlined className="w-5 h-5 text-gray-300 transition duration-75 group-hover:text-white" />
-                <span className="ms-3 group-hover:text-white">{t('menu.products')}</span>
-              </Link>
+                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{t('menu.products')}</span>
+                <svg
+                  className={`w-3 h-3 transition-transform ${isConfigOpen ? 'rotate-180' : ''
+                    }`}
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+              <ul
+                id="dropdown-config"
+                className={`${isProductOpen ? 'block' : 'hidden'} py-2 space-y-2`}
+              >
+                <li>
+                  <Link
+                    to="/products"
+                    className={`flex items-center w-full p-2 text-white hover:text-white transition duration-75 rounded-lg pl-11 ${currentColor.hover} 
+                    ${isActive('/products') ? currentColor.menuActive : currentColor.bg} 
+                    ${isActive('/products') ? 'dark:bg-gray-700' : 'dark:bg-gray-800'}
+                    dark:hover:bg-gray-700`}
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    {t('menu.products')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/categories"
+                    className={`flex items-center w-full p-2 text-white hover:text-white transition duration-75 rounded-lg pl-11 ${currentColor.hover} 
+                    ${isActive('/categories') ? currentColor.menuActive : currentColor.bg} 
+                    ${isActive('/categories') ? 'dark:bg-gray-700' : 'dark:bg-gray-800'}
+                    dark:hover:bg-gray-700`}
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    {t('menu.category')}
+                  </Link>
+                </li>
+              </ul>
             </li>
             <li>
               <button

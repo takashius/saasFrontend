@@ -7,11 +7,14 @@
   "update": "Update",
   "saveSuccess": "Save success",
   "saveError": "An error occurred while saving",
+  "deleteSuccess": "Delete Success",
   "confirmOkText": "Yes",
   "confirmCancelText": "No",
+  "create": "Create",
+  "cancel": "Cancel",
   "menu": {
     "home": "Home",
-    "customer": "Customers",
+    "category": "Categories",
     "products": "Products",
     "settings": "Settings",
     "general": "General",
@@ -76,10 +79,10 @@
     "description": "Description",
     "price": "Price",
     "iva": "IVA",
-    "create": "Create",
-    "cancel": "Cancel",
     "validationName": "Please enter the product name",
-    "validationPrice": "Please enter the product price"
+    "validationPrice": "Please enter the product price",
+    "createSuccess": "Product created successfully",
+    "editSuccess": "Product edited successfully"
   },
   "ProductList": {
     "searchPlaceholder": "Search product",
@@ -165,5 +168,8 @@
       "cyan": "Cyan",
       "gray": "Gray"
     }
+  },
+  "Category": {
+    "title": "Categories"
   }
 }

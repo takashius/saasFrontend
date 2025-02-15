@@ -7,11 +7,14 @@
   "update": "Actualizar",
   "saveSuccess": "Guardado correctamente",
   "saveError": "Ocurrio un error al guardar",
+  "deleteSuccess": "Eliminado correctamente",
   "confirmOkText": "Sí",
   "confirmCancelText": "No",
+  "create": "Crear",
+  "cancel": "Cancelar",
   "menu": {
     "home": "Inicio",
-    "customer": "Clientes",
+    "category": "Categorías",
     "products": "Productos",
     "settings": "Configuración",
     "general": "General",
@@ -76,10 +79,10 @@
     "description": "Descripción",
     "price": "Precio",
     "iva": "IVA",
-    "create": "Crear",
-    "cancel": "Cancelar",
     "validationName": "Por favor ingrese el nombre del producto",
-    "validationPrice": "Por favor ingrese el precio del producto"
+    "validationPrice": "Por favor ingrese el precio del producto",
+    "createSuccess": "Producto creado correctamente",
+    "editSuccess": "Producto editado correctamente"
   },
   "ProductList": {
     "searchPlaceholder": "Buscar producto",
@@ -174,5 +177,15 @@
     "bio": "Biografia",
     "address": "Dirección",
     "password": "Cambiar contraseña"
+  },
+  "Category": {
+    "title": "Categorías",
+    "deleteConfirmTitle": "Eliminar la categoría",
+    "deleteConfirmDescription": "¿Estás seguro de eliminar esta categoría?",
+    "createSuccess": "Categoría creada correctamente",
+    "updateSuccess": "Categoría actualizada correctamente",
+    "searchPlaceholder": "Buscar categoría",
+    "addButton": "Agregar categoría",
+    "editCategory": "Editar categoría"
   }
 }

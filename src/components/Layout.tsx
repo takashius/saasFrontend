@@ -1,4 +1,4 @@
-import { Layout as AntLayout, ConfigProvider } from 'antd';
+import { Layout as AntLayout, App as AntApp, ConfigProvider } from 'antd';
 import { Outlet } from "react-router-dom";
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -15,21 +15,23 @@ const Layout = () => {
   const isFixed = localStorage.getItem('isHeaderFixed') === 'true';
 
   return (
-    <ConfigProvider theme={getThemeConfig()}>
-      <QueryClientProvider client={client}>
-        <div className={darkMode ? 'dark' : ''}>
-          <AntLayout className="min-h-screen">
-            <Sidebar />
-            <AntLayout>
-              <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} isFixed={isFixed} />
-              <Content className={`p-4 sm:ml-64 ${isFixed ? 'mt-16' : ''}`}>
-                <Outlet />
-              </Content>
+    <AntApp>
+      <ConfigProvider theme={getThemeConfig()}>
+        <QueryClientProvider client={client}>
+          <div className={darkMode ? 'dark' : ''}>
+            <AntLayout className="min-h-screen">
+              <Sidebar />
+              <AntLayout>
+                <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} isFixed={isFixed} />
+                <Content className={`p-4 sm:ml-64 ${isFixed ? 'mt-16' : ''}`}>
+                  <Outlet />
+                </Content>
+              </AntLayout>
             </AntLayout>
-          </AntLayout>
-        </div>
-      </QueryClientProvider>
-    </ConfigProvider>
+          </div>
+        </QueryClientProvider>
+      </ConfigProvider>
+    </AntApp>
   );
 };
 

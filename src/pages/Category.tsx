@@ -1,24 +1,25 @@
 import { useState, useEffect, useRef } from 'react'
 import { Table, Button, Input, Popconfirm, message, List, Card } from 'antd'
 import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import AddProductModal from '../components/modals/AddProductModal'
+import AddCategoryModal from '../components/modals/AddCategoryModal'
 import { useTranslation } from 'react-i18next'
-import { useDeleteProduct, useProductList } from '../api/products'
-import { Product } from 'src/types'
+import { useDeleteCategory, useCategoryList } from '../api/category'
+import { Category } from 'src/types/category'
 
-const ProductList = () => {
+const Category = () => {
   const { t } = useTranslation()
   const [searchText, setSearchText] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [mobilePage, setMobilePage] = useState(1)
-  const [mobileData, setMobileData] = useState<Product[]>([])
+  const [mobileData, setMobileData] = useState<Category[]>([])
   const loaderRef = useRef(null)
   const [modalVisible, setModalVisible] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
+  const [messageApi, contextHolder] = message.useMessage()
   const [initialValues, setInitialValues] = useState<any>(null)
   const [loadingId, setLoadingId] = useState<string | null>(null)
-  const { data, isLoading, isSuccess, error, refetch } = useProductList(currentPage, searchText)
-  const deleteProductMutation = useDeleteProduct()
+  const { data, isLoading, isSuccess, error, refetch } = useCategoryList(currentPage, searchText)
+  const deleteCategoryMutation = useDeleteCategory()
 
   useEffect(() => {
     setCurrentPage(1)
@@ -71,26 +72,14 @@ const ProductList = () => {
       key: 'name'
     },
     {
-      title: t('ProductList.price'),
-      dataIndex: 'price',
-      key: 'price'
-    },
-    {
-      title: t('ProductList.iva'),
-      key: 'iva',
-      render: (record: any) => (
-        <span>{record.iva ? t('ProductList.ivaYes') : t('ProductList.ivaNo')}</span>
-      )
-    },
-    {
       title: t('ProductList.actions'),
       key: 'actions',
       render: (record: any) => (
         <Button.Group>
           <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(record)} />
           <Popconfirm
-            title={t('ProductList.deleteConfirmTitle')}
-            description={t('ProductList.deleteConfirmDescription')}
+            title={t('Category.deleteConfirmTitle')}
+            description={t('Category.deleteConfirmDescription')}
             onConfirm={() => handleDelete(record._id)}
             okText={t('confirmOkText')}
             cancelText={t('confirmCancelText')}
@@ -98,7 +87,7 @@ const ProductList = () => {
             <Button
               icon={<DeleteOutlined />} className="ml-2"
               type='primary'
-              loading={loadingId === record._id && deleteProductMutation.isPending}
+              loading={loadingId === record._id && deleteCategoryMutation.isPending}
             />
           </Popconfirm>
         </Button.Group>
@@ -114,9 +103,12 @@ const ProductList = () => {
 
   const handleDelete = (productId: string) => {
     setLoadingId(productId)
-    deleteProductMutation.mutate(productId, {
+    deleteCategoryMutation.mutate(productId, {
       onSuccess: () => {
-        message.success(t("deleteSuccess"))
+        messageApi.open({
+          type: 'success',
+          content: t("deleteSuccess"),
+        })
         refetch()
       },
       onSettled: () => {
@@ -126,13 +118,19 @@ const ProductList = () => {
   }
 
   const handleCreate = () => {
-    message.success(t("AddProductModal.createSuccess"))
+    messageApi.open({
+      type: 'success',
+      content: t("Category.createSuccess"),
+    })
     setModalVisible(false)
     refetch()
   }
 
   const handleEditSuccess = () => {
-    message.success(t("AddProductModal.editSuccess"))
+    messageApi.open({
+      type: 'success',
+      content: t("Category.updateSuccess"),
+    })
     setModalVisible(false)
     refetch()
   }
@@ -155,9 +153,10 @@ const ProductList = () => {
 
   return (
     <div className="p-4">
+      {contextHolder}
       <div className="flex flex-col md:flex-row justify-between items-center mb-4">
         <Input
-          placeholder={t('ProductList.searchPlaceholder')}
+          placeholder={t('Category.searchPlaceholder')}
           value={searchText}
           onChange={e => setSearchText(e.target.value)}
           prefix={<SearchOutlined />}
@@ -168,7 +167,7 @@ const ProductList = () => {
           setIsEdit(false);
           setInitialValues(null)
         }}>
-          {t('ProductList.addProductButton')}
+          {t('Category.addButton')}
         </Button>
       </div>
       <div className="hidden md:block">
@@ -178,7 +177,7 @@ const ProductList = () => {
           rowKey="_id"
           loading={isLoading}
           pagination={{
-            total: data?.totalProducts || 0,
+            total: data?.totalCategories || 0,
             current: currentPage,
             pageSize: 20,
             showSizeChanger: false
@@ -197,20 +196,19 @@ const ProductList = () => {
                   {(item.description != undefined && item.description) &&
                     <p><strong>{t('GeneralSettings.description')}: </strong>{item.description}</p>
                   }
-                  <p><strong>{t('AddProductModal.price')}: </strong>{item.price}</p>
                   <div className='mt-4'>
                     <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(item)} />
                     <Popconfirm
-                      title={t('quotationDetails.deleteConfirmTitle')}
-                      description={t('quotationDetails.deleteConfirmDescription')}
-                      onConfirm={() => handleDelete(item._id)}
+                      title={t('Category.deleteConfirmTitle')}
+                      description={t('Category.deleteConfirmDescription')}
+                      onConfirm={() => handleDelete(item._id!)}
                       okText={t('home.confirmOkText')}
                       cancelText={t('home.confirmCancelText')}
                     >
                       <Button
                         icon={<DeleteOutlined />} className="ml-2"
                         type='primary'
-                        loading={loadingId === item._id && deleteProductMutation.isPending}
+                        loading={loadingId === item._id && deleteCategoryMutation.isPending}
                       />
                     </Popconfirm>
                   </div>
@@ -223,7 +221,7 @@ const ProductList = () => {
           {isLoading && <Button loading></Button>}
         </div>
       </div>
-      <AddProductModal
+      <AddCategoryModal
         visible={modalVisible}
         onCreate={handleCreate}
         onEdit={handleEditSuccess}
@@ -235,4 +233,4 @@ const ProductList = () => {
   )
 }
 
-export default ProductList
+export default Category

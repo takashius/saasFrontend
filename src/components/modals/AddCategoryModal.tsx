@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react'
-import { Modal, Form, Input, Switch } from 'antd'
+import { Modal, Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useCreateProduct, useEditProduct } from '../api/products'
-import { Product } from '../types'
+import { useCreateCategory, useEditCategory } from '../../api/category'
+import { Category } from 'src/types/category'
 
-interface AddProductModalProps {
+interface AddCategoryModalProps {
   visible: boolean
   onCreate: (values: any) => void
   onEdit: (values: any) => void
   onCancel: () => void
   isEdit?: boolean
-  initialValues?: Product
+  initialValues?: Category
 }
 
-const AddProductModal: React.FC<AddProductModalProps> = ({ visible, onCreate, onEdit, onCancel, isEdit = false, initialValues }) => {
+const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ visible, onCreate, onEdit, onCancel, isEdit = false, initialValues }) => {
   const [form] = Form.useForm()
   const { t } = useTranslation()
-  const { mutate: createProduct, isPending: isCreating } = useCreateProduct()
-  const { mutate: editProduct, isPending: isEditing } = useEditProduct()
+  const { mutate: createCategory, isPending: isCreating } = useCreateCategory()
+  const { mutate: editCategory, isPending: isEditing } = useEditCategory()
 
   useEffect(() => {
     if (initialValues) {
@@ -28,31 +28,31 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ visible, onCreate, on
   }, [initialValues, form])
 
   const handleCreate = (values: any) => {
-    createProduct(values, {
+    createCategory(values, {
       onSuccess: () => {
         onCreate(values)
         onCancel()
         form.resetFields()
       },
       onError: (error: any) => {
-        console.error('Error creating product:', error)
+        message.error(`${error}`)
       },
     })
   }
 
   const handleEdit = (values: any) => {
-    const productData = {
+    const categoryData = {
       ...values,
-      id: initialValues?._id,
+      _id: initialValues?._id,
     }
-    editProduct(productData, {
+    editCategory(categoryData, {
       onSuccess: () => {
         onEdit(values)
         onCancel()
         form.resetFields()
       },
       onError: (error: any) => {
-        console.error('Error editing product:', error)
+        message.error(`${error}`)
       },
     })
   }
@@ -60,9 +60,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ visible, onCreate, on
   return (
     <Modal
       visible={visible}
-      title={isEdit ? t('AddProductModal.editProduct') : t('AddProductModal.addProduct')}
-      okText={isEdit ? t('update') : t('AddProductModal.create')}
-      cancelText={t('AddProductModal.cancel')}
+      title={isEdit ? t('Category.editCategory') : t('Category.addButton')}
+      okText={isEdit ? t('update') : t('create')}
+      cancelText={t('cancel')}
       onCancel={onCancel}
       onOk={() => {
         form
@@ -94,23 +94,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ visible, onCreate, on
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="price"
-          label={t('AddProductModal.price')}
-          rules={[{ required: true, message: t('AddProductModal.validationPrice') }]}
-        >
-          <Input type="number" />
-        </Form.Item>
-        <Form.Item
-          name="iva"
-          label={t('AddProductModal.iva')}
-          valuePropName="checked"
-        >
-          <Switch />
-        </Form.Item>
       </Form>
     </Modal>
   )
 }
 
-export default AddProductModal
+export default AddCategoryModal

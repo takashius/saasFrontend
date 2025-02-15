@@ -8,12 +8,6 @@ export interface CreatedExtend {
   date: string
 }
 
-export interface Customer {
-  _id: string
-  name: string
-  lastname: string
-}
-
 export interface User {
   _id: string
   name: string
@@ -31,16 +25,6 @@ export interface Company {
   logoAlpha: string
 }
 
-export interface Address {
-  title: string
-  city: string
-  line1: string
-  line2?: string
-  zip: string
-  default: boolean
-  _id: string
-}
-
 export interface Product {
   master: string
   name: string
@@ -49,17 +33,6 @@ export interface Product {
   amount: number
   iva: boolean
   _id: string
-}
-
-export interface CustomerDetail {
-  _id: string
-  title: string
-  name: string
-  lastname: string
-  rif: string
-  email: string
-  phone: string
-  addresses: Address[]
 }
 
 export interface Account {

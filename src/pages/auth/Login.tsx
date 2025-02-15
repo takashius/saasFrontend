@@ -5,6 +5,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useLogin } from '../../api/auth'
+import { getErrorMessage } from '../../utils/GetMessage'
 
 const Login: React.FC = () => {
   const { t } = useTranslation()
@@ -51,9 +52,10 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (loginQuery.error) {
+      const errorMessage: string = getErrorMessage(loginQuery.error)
       messageApi.open({
         type: 'error',
-        content: `${loginQuery.error}`,
+        content: `${errorMessage}`,
       })
     }
   }, [loginQuery.error, messageApi])

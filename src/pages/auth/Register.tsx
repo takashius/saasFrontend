@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Form, Input, Button, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRegister } from '../../api/auth'
+import { getErrorMessage } from '../../utils/GetMessage'
 
 const Register: React.FC = () => {
   const { t } = useTranslation()
@@ -23,17 +24,7 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     if (registerMutate.error) {
-      let errorMessage: string = ''
-
-      if (typeof registerMutate.error === 'string') {
-        errorMessage = registerMutate.error
-      } else if (registerMutate.error instanceof Error) {
-        errorMessage = registerMutate.error.message
-      } else if (typeof registerMutate.error === 'object' && registerMutate.error !== null) {
-        const errorObject = registerMutate.error as Record<string, string>
-        const firstErrorKey = Object.keys(errorObject)[0]
-        errorMessage = errorObject[firstErrorKey]
-      }
+      const errorMessage: string = getErrorMessage(registerMutate.error)
 
       messageApi.open({
         type: 'error',
