@@ -90,11 +90,11 @@ const ProductList = () => {
         <Button.Group>
           <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(record)} />
           <Popconfirm
-            title={t('quotationDetails.deleteConfirmTitle')}
-            description={t('quotationDetails.deleteConfirmDescription')}
+            title={t('ProductList.deleteConfirmTitle')}
+            description={t('ProductList.deleteConfirmDescription')}
             onConfirm={() => handleDelete(record._id)}
-            okText={t('home.confirmOkText')}
-            cancelText={t('home.confirmCancelText')}
+            okText={t('confirmOkText')}
+            cancelText={t('confirmCancelText')}
           >
             <Button
               icon={<DeleteOutlined />} className="ml-2"

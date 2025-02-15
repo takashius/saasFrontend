@@ -3,7 +3,6 @@ import { Card, Form, Input, InputNumber, Select, Switch, Upload, Row, Col, Skele
 import { UploadOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useGetCompany, useSetConfig } from '../../api/company'
-import { useAuth } from '../../context/AuthContext'
 import { useUploadImage } from '../../api/auth'
 
 const { Option } = Select;
@@ -14,8 +13,6 @@ const GeneralSettings: React.FC = () => {
   const [logo, setLogo] = useState<string | null>(null)
   const { data: config, isLoading, refetch } = useGetCompany(true)
   const configMutation = useSetConfig()
-  const { getUser } = useAuth()
-  const user: any = getUser()
   const uploadImageMutation = useUploadImage()
 
   const [webColor, setWebColor] = useState<string>(localStorage.getItem('webColor') || 'blue')
@@ -51,7 +48,8 @@ const GeneralSettings: React.FC = () => {
     form
       .validateFields()
       .then((values) => {
-        values.id = user.company;
+        values.id = config?._id
+        console.log('handleSave -> VALUES', values)
         configMutation.mutate(values, {
           onSuccess: () => {
             message.success(t('saveSuccess'))

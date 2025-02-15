@@ -8,7 +8,7 @@ import ERDEAxios from './ERDEAxios'
 import { Product, ProductListResponse } from 'src/types'
 
 const fetchSimpleProducts = async (): Promise<Product[]> => {
-  const response = await ERDEAxios.get<Product[]>('/product/simple')
+  const response = await ERDEAxios.get<Product[]>('/products/simple')
   return response.data
 }
 
@@ -25,7 +25,7 @@ const fetchProducts = async (
   search: string
 ): Promise<ProductListResponse> => {
   const response = await ERDEAxios.get<ProductListResponse>(
-    `/product/list/${page}/${search}`
+    `/products/list/${page}/${search}`
   )
   return response.data
 }
@@ -42,7 +42,7 @@ export const useProductList = (
 }
 
 const createProduct = async (productData: Product): Promise<void> => {
-  await ERDEAxios.post('/product', productData)
+  await ERDEAxios.post('/products', productData)
 }
 
 export const useCreateProduct = (): UseMutationResult<void, Error, Product> => {
@@ -53,7 +53,7 @@ export const useCreateProduct = (): UseMutationResult<void, Error, Product> => {
 }
 
 const editProduct = async (productData: Product): Promise<void> => {
-  await ERDEAxios.patch('/product', productData)
+  await ERDEAxios.patch('/products', productData)
 }
 
 export const useEditProduct = (): UseMutationResult<void, Error, Product> => {
@@ -64,7 +64,7 @@ export const useEditProduct = (): UseMutationResult<void, Error, Product> => {
 }
 
 const deleteProduct = async (id: string) => {
-  const response = await ERDEAxios.delete(`/product/${id}`)
+  const response = await ERDEAxios.delete(`/products/${id}`)
   return response.data
 }
 

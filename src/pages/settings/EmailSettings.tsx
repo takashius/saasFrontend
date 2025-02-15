@@ -45,7 +45,7 @@ const EmailSettings: React.FC = () => {
       .validateFields()
       .then(values => {
         const data = {
-          id: user.company,
+          id: config?._id,
           configMail: {
             colors: {
               primary: primaryColor,
@@ -56,6 +56,7 @@ const EmailSettings: React.FC = () => {
             textBody: values.messageBody
           }
         }
+        console.log('handleSave -> VALUES', user)
         configMutation.mutate(data, {
           onSuccess: () => {
             message.success(t('saveSuccess'))

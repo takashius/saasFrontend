@@ -3,15 +3,12 @@ import { Card, Form, InputNumber, Button, Upload, Row, Col, Skeleton, message } 
 import { UploadOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useGetCompany, useSetConfig } from '../../api/company'
-import { useAuth } from '../../context/AuthContext'
 import { useUploadImage } from '../../api/auth'
 
 const PDFSettings: React.FC = () => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const [watermark, setWatermark] = useState<string | null>(null)
-  const { getUser } = useAuth()
-  const user: any = getUser()
   const { data: config, isLoading, refetch } = useGetCompany(true)
   const configMutation = useSetConfig()
   const uploadImageMutation = useUploadImage()
@@ -36,7 +33,7 @@ const PDFSettings: React.FC = () => {
       .validateFields()
       .then(values => {
         const data = {
-          id: user.company,
+          id: config?._id,
           pdf: {
             logo: {
               width: values.logoWidth,

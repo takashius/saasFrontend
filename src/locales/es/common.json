@@ -7,6 +7,8 @@
   "update": "Actualizar",
   "saveSuccess": "Guardado correctamente",
   "saveError": "Ocurrio un error al guardar",
+  "confirmOkText": "Sí",
+  "confirmCancelText": "No",
   "menu": {
     "home": "Inicio",
     "customer": "Clientes",
@@ -69,6 +71,7 @@
   },
   "AddProductModal": {
     "addProduct": "Agregar Producto",
+    "editProduct": "Editar Producto",
     "name": "Nombre",
     "description": "Descripción",
     "price": "Precio",
@@ -86,7 +89,9 @@
     "iva": "IVA",
     "ivaYes": "IVA",
     "ivaNo": "Sin IVA",
-    "actions": "Acciones"
+    "actions": "Acciones",
+    "deleteConfirmTitle": "Eliminar el producto",
+    "deleteConfirmDescription": "¿Estás seguro de eliminar este producto?"
   },
   "GeneralSettings": {
     "title": "Configuración General",
