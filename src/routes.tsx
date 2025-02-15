@@ -1,14 +1,11 @@
 import Layout from './components/Layout'
 import RootAuth from './components/RootAuth'
 import Error404 from './pages/Error404'
-import Users from './pages/Users'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import RecoverPassword from './pages/auth/RecoverPassword'
 import RecoveryStep2 from './pages/auth/RecoveryStep2'
-import ClientList from './pages/ClientList'
 import ProductList from './pages/ProductList'
-import ClientDetail from './pages/ClientDetail'
 import GeneralSettings from './pages/settings/GeneralSettings'
 import PDFSettings from './pages/settings/PDFSettings'
 import EmailSettings from './pages/settings/EmailSettings'
@@ -24,9 +21,6 @@ export const routes = [
     errorElement: <Error404 />,
     children: [
       { path: '/', element: <Dashboard />, protected: true },
-      { path: '/users', element: <Users />, protected: true },
-      { path: '/clients', element: <ClientList />, protected: true },
-      { path: '/client/:id', element: <ClientDetail />, protected: true },
       { path: '/products', element: <ProductList />, protected: true },
     ]
   },

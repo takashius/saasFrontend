@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeOutlined, UserOutlined, ShoppingOutlined, SettingOutlined } from '@ant-design/icons';
+import { HomeOutlined, ShoppingOutlined, SettingOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import { getColorFromLocalStorage } from '../theme/colorPalette';
 import { useTranslation } from 'react-i18next';
@@ -110,19 +110,6 @@ const Sidebar = () => {
               >
                 <HomeOutlined className="w-5 h-5 text-gray-300 transition duration-75 group-hover:text-white" />
                 <span className="ms-3 group-hover:text-white">{t('menu.home')}</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/clients"
-                className={`flex items-center p-2 text-white rounded-lg ${currentColor.hover} 
-                ${isActive('/clients') ? currentColor.menuActive : currentColor.bg} 
-                ${isActive('/clients') ? 'dark:bg-gray-700' : 'dark:bg-gray-800'}
-                dark:hover:bg-gray-700 group`}
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <UserOutlined className="w-5 h-5 text-gray-300 transition duration-75 group-hover:text-white" />
-                <span className="ms-3 group-hover:text-white">{t('menu.customer')}</span>
               </Link>
             </li>
             <li>
