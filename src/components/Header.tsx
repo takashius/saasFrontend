@@ -1,9 +1,10 @@
-import React from 'react';
-import { Layout, Avatar, Dropdown, Switch } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import { MoonOutlined, SunFilled } from '@ant-design/icons';
-import UserMenu from './UserMenu';
-import { getColorFromLocalStorage } from '../theme/colorPalette';
+import React from 'react'
+import { Layout, Avatar, Dropdown, Switch } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import { MoonOutlined, SunFilled } from '@ant-design/icons'
+import UserMenu from './UserMenu'
+import { getColorFromLocalStorage } from '../theme/colorPalette'
+import { useAuth } from '../context/AuthContext'
 
 const { Header: AntHeader } = Layout;
 
@@ -18,8 +19,10 @@ const Header: React.FC<HeaderProps> = ({
   toggleDarkMode,
   isFixed
 }) => {
-  const fixedClasses = isFixed ? 'fixed z-10' : '';
-  const currentColor = getColorFromLocalStorage();
+  const fixedClasses = isFixed ? 'fixed z-10' : ''
+  const currentColor = getColorFromLocalStorage()
+  const { getUser } = useAuth()
+  const user: any = getUser()
 
   return (
     <AntHeader
@@ -35,7 +38,11 @@ const Header: React.FC<HeaderProps> = ({
           style={{ transform: 'scale(1.2)', paddingLeft: 2, paddingRight: 2 }}
         />
         <Dropdown overlay={<UserMenu />}>
-          <Avatar icon={<UserOutlined />} className="cursor-pointer" />
+          <Avatar
+            icon={user.photo ? undefined : <UserOutlined />}
+            src={user.photo}
+            className="cursor-pointer"
+          />
         </Dropdown>
       </div>
     </AntHeader>

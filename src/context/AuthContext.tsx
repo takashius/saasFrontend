@@ -6,6 +6,7 @@ interface AuthContextType {
   login: (userData: any) => void
   logout: () => void
   getUser: () => void
+  updatePhoto: (photoUrl: string) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -34,8 +35,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return null
   }
 
+  const updatePhoto = (photoUrl: string) => {
+    const updatedUser = { ...user, photo: photoUrl };
+    setUser(updatedUser);
+    localStorage.setItem('UserData', JSON.stringify(updatedUser));
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, getUser }}>
+    <AuthContext.Provider value={{ user, token, login, logout, getUser, updatePhoto }}>
       {children}
     </AuthContext.Provider>
   )

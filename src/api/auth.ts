@@ -81,8 +81,12 @@ export const useRegister = (): UseMutationResult<any, unknown, Register> => {
   })
 }
 
-export const useUpdateProfile = () => {
-  return useMutation({
+export const useUpdateProfile = (): UseMutationResult<
+  any,
+  unknown,
+  Account
+> => {
+  return useMutation<any, unknown, Account>({
     mutationFn: (data: Account) => {
       return ERDEAxios.patch('/user/profile', data)
     }

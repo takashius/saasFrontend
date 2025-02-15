@@ -3,6 +3,7 @@ import { Card, Form, Input, Button, Upload, Tooltip, Row, Col, Skeleton, message
 import { UploadOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useUploadImageProfile, useAccount, useUpdateProfile } from '../../api/auth'
+import { useAuth } from '../../context/AuthContext'
 
 const ProfileSettings: React.FC = () => {
   const { t } = useTranslation()
@@ -14,13 +15,15 @@ const ProfileSettings: React.FC = () => {
   const { data, isLoading, refetch } = useAccount()
   const updateMutation = useUpdateProfile()
   const uploadImageMutation = useUploadImageProfile()
+  const { updatePhoto } = useAuth()
 
   useEffect(() => {
     if (data) {
       form.setFieldsValue(data)
       setBanner(data.banner ?? null)
       setPhoto(data.photo ?? null)
-      setUserId(data?._id ?? '');
+      setUserId(data?._id ?? '')
+      updatePhoto(data.photo ? data.photo : '')
     }
   }, [data, form])
 
@@ -28,11 +31,10 @@ const ProfileSettings: React.FC = () => {
     form
       .validateFields()
       .then(values => {
-        console.log(values)
         const userData: any = {
           _id: userId,
           name: values.name,
-          lastName: values.lastname,
+          lastName: values.lastName,
           phone: values.phone,
           bio: values.bio,
           address: values.address,
@@ -45,7 +47,18 @@ const ProfileSettings: React.FC = () => {
             message.success(t('saveSuccess'))
           },
           onError: () => {
-            message.error(t('saveError'))
+            let errorMessage: string = ''
+
+            if (typeof updateMutation.error === 'string') {
+              errorMessage = updateMutation.error
+            } else if (updateMutation.error instanceof Error) {
+              errorMessage = updateMutation.error.message
+            } else if (typeof updateMutation.error === 'object' && updateMutation.error !== null) {
+              const errorObject = updateMutation.error as Record<string, string>
+              const firstErrorKey = Object.keys(errorObject)[0]
+              errorMessage = errorObject[firstErrorKey]
+            }
+            message.error(errorMessage)
           }
         })
       })
@@ -113,7 +126,7 @@ const ProfileSettings: React.FC = () => {
             </Col>
             <Col xs={24} sm={24} md={12}>
               <Form.Item
-                name="lastname"
+                name="lastName"
                 label={t('AddClientModal.lastname')}
                 rules={[{ required: true, message: t('AddClientModal.validationLastname') }]}
               >
@@ -188,7 +201,7 @@ const ProfileSettings: React.FC = () => {
                 rules={[
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('password') === value) {
+                      if (!value || getFieldValue('password') && getFieldValue('password') === value) {
                         return Promise.resolve()
                       }
                       return Promise.reject(new Error(t('register.passwordMismatch')))
