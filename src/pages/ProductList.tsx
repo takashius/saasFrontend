@@ -193,7 +193,7 @@ const ProductList = () => {
               dataSource={mobileData}
               renderItem={item => (
                 <Card className="mb-2">
-                  <p><strong>{t('home.title')}: </strong>{item.name}</p>
+                  <p><strong>{t('ProductList.name')}: </strong>{item.name}</p>
                   {(item.description != undefined && item.description) &&
                     <p><strong>{t('GeneralSettings.description')}: </strong>{item.description}</p>
                   }

@@ -67,7 +67,7 @@ const Category = () => {
 
   const columns = [
     {
-      title: t('ProductList.name'),
+      title: t('global.title'),
       dataIndex: 'name',
       key: 'name'
     },
@@ -192,7 +192,7 @@ const Category = () => {
               dataSource={mobileData}
               renderItem={item => (
                 <Card className="mb-2">
-                  <p><strong>{t('home.title')}: </strong>{item.name}</p>
+                  <p><strong>{t('global.title')}: </strong>{item.name}</p>
                   {(item.description != undefined && item.description) &&
                     <p><strong>{t('GeneralSettings.description')}: </strong>{item.description}</p>
                   }

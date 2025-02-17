@@ -145,7 +145,7 @@ const ProfileSettings: React.FC = () => {
 
         <Card title={t('ProfileSettings.imageTitle')} bordered={false} className="mb-4">
           <Row gutter={[16, 16]}>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="photo"
                 label={t('ProfileSettings.photo')}
@@ -163,7 +163,7 @@ const ProfileSettings: React.FC = () => {
                 {photo && <img src={photo} alt="banner" style={{ marginTop: '10px', maxWidth: '200px' }} />}
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="banner"
                 label={t('EmailSettings.banner')}
@@ -186,14 +186,14 @@ const ProfileSettings: React.FC = () => {
 
         <Card title={t('ProfileSettings.password')} bordered={false} className="mb-4">
           <Row gutter={[16, 16]}>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="password"
               >
                 <Input.Password placeholder={t('register.password')} />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="confirmPassword"
                 dependencies={['password']}
@@ -217,7 +217,7 @@ const ProfileSettings: React.FC = () => {
 
         <Card title={t('ProfileSettings.profile')} bordered={false}>
           <Row gutter={[16, 16]}>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="bio"
                 label={
@@ -232,8 +232,7 @@ const ProfileSettings: React.FC = () => {
                 <Input.TextArea rows={4} />
               </Form.Item>
             </Col>
-            <Col span={12}>
-
+            <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="address"
                 label={

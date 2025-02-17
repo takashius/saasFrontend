@@ -12,6 +12,10 @@
   "confirmCancelText": "No",
   "create": "Create",
   "cancel": "Cancel",
+  "global": {
+    "noData": "No data available",
+    "title": "Title"
+  },
   "menu": {
     "home": "Home",
     "category": "Categories",
