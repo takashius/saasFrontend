@@ -3,6 +3,7 @@ export interface Category {
   description: string
   image: string
   _id?: string
+  id?: string
 }
 
 export interface CategoryListResponse {

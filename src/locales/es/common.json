@@ -79,10 +79,13 @@
     "description": "Descripción",
     "price": "Precio",
     "iva": "IVA",
+    "categoryLabel": "Categoría",
     "validationName": "Por favor ingrese el nombre del producto",
     "validationPrice": "Por favor ingrese el precio del producto",
+    "categoryRequired": "La categoría es requerida",
     "createSuccess": "Producto creado correctamente",
-    "editSuccess": "Producto editado correctamente"
+    "editSuccess": "Producto editado correctamente",
+    "categoryPlaceholder": "Seleccione una"
   },
   "ProductList": {
     "searchPlaceholder": "Buscar producto",

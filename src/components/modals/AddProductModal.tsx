@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { Modal, Form, Input, Switch, message } from 'antd'
+import { Modal, Form, Input, Switch, message, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useCreateProduct, useEditProduct } from '../../api/products'
+import { useCategories } from '../../api/category'
 import { Product } from '../../types'
 
 interface AddProductModalProps {
@@ -18,10 +19,14 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ visible, onCreate, on
   const { t } = useTranslation()
   const { mutate: createProduct, isPending: isCreating } = useCreateProduct()
   const { mutate: editProduct, isPending: isEditing } = useEditProduct()
+  const { data: categories, isLoading } = useCategories()
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue(initialValues)
+      form.setFieldsValue({
+        ...initialValues,
+        category: initialValues.category._id
+      })
     } else {
       form.resetFields()
     }
@@ -100,6 +105,29 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ visible, onCreate, on
           rules={[{ required: true, message: t('AddProductModal.validationPrice') }]}
         >
           <Input type="number" />
+        </Form.Item>
+        <Form.Item
+          label={t('AddProductModal.categoryLabel')}
+          name="category"
+          rules={[{ required: true, message: t('AddProductModal.categoryRequired') }]}
+        >
+          <Select
+            showSearch
+            placeholder={t('AddProductModal.categoryPlaceholder')}
+            loading={isLoading}
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              const optionText = option?.children ? `${option.children}` : ''
+              return optionText.toLowerCase().includes(input.toLowerCase())
+            }
+            }
+          >
+            {categories?.map(item => (
+              <Select.Option key={item.id} value={item.id}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           name="iva"

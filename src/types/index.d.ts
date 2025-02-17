@@ -26,6 +26,7 @@ export interface Company {
 }
 
 export interface Product {
+  category: any
   master: string
   name: string
   description: string
