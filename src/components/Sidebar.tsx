@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeOutlined, ShoppingOutlined, SettingOutlined } from '@ant-design/icons';
+import { HomeOutlined, ShoppingOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import { getColorFromLocalStorage } from '../theme/colorPalette';
 import { useTranslation } from 'react-i18next';
@@ -180,6 +180,19 @@ const Sidebar = () => {
                   </Link>
                 </li>
               </ul>
+            </li>
+            <li>
+              <Link
+                to="/users"
+                className={`flex items-center p-2 text-white rounded-lg ${currentColor.hover} 
+                ${isActive('/users') ? currentColor.menuActive : currentColor.bg} 
+                ${isActive('/users') ? 'dark:bg-gray-700' : 'dark:bg-gray-800'}
+                dark:hover:bg-gray-700 group`}
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <UserOutlined className="w-5 h-5 text-gray-300 transition duration-75 group-hover:text-white" />
+                <span className="ms-3 group-hover:text-white">{t('menu.users')}</span>
+              </Link>
             </li>
             <li>
               <button

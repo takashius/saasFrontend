@@ -12,6 +12,7 @@
   "confirmCancelText": "No",
   "create": "Crear",
   "cancel": "Cancelar",
+  "date": "Fecha",
   "global": {
     "noData": "No hay datos",
     "title": "Título"
@@ -20,6 +21,7 @@
     "home": "Inicio",
     "category": "Categorías",
     "products": "Productos",
+    "users": "Usuarios",
     "settings": "Configuración",
     "general": "General",
     "pdf": "Ajustes de PDF",

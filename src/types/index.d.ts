@@ -122,3 +122,8 @@ export interface Correlative {
   manageInvoiceCorrelative: boolean
   invoice: number
 }
+
+export interface Simple {
+  id: string
+  name: string
+}

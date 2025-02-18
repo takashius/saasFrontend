@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
 import ProfileSettings from './pages/settings/ProfileSettings'
 import Category from './pages/Category'
+import UserList from './pages/UserList'
+import UserEditForm from './pages/UserDetail'
 
 export const routes = [
   {
@@ -24,6 +26,8 @@ export const routes = [
       { path: '/', element: <Dashboard />, protected: true },
       { path: '/products', element: <ProductList />, protected: true },
       { path: '/categories', element: <Category />, protected: true },
+      { path: '/users', element: <UserList />, protected: true },
+      { path: '/users/:id', element: <UserEditForm />, protected: true },
     ]
   },
   {
