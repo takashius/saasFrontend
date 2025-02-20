@@ -5,15 +5,15 @@ import {
   UseQueryResult
 } from '@tanstack/react-query'
 import ERDEAxios from './ERDEAxios'
-import { Category, CategoryListResponse } from 'src/types/category'
+import { CategoryType, CategoryListResponse } from 'src/types/category'
 
-const fetchSimpleCategories = async (): Promise<Category[]> => {
-  const response = await ERDEAxios.get<Category[]>('/categories/simple')
+const fetchSimpleCategories = async (): Promise<CategoryType[]> => {
+  const response = await ERDEAxios.get<CategoryType[]>('/categories/simple')
   return response.data
 }
 
-export const useCategories = (): UseQueryResult<Category[], Error> => {
-  return useQuery<Category[], Error>({
+export const useCategories = (): UseQueryResult<CategoryType[], Error> => {
+  return useQuery<CategoryType[], Error>({
     queryKey: ['category simple'],
     queryFn: fetchSimpleCategories,
     retry: false
@@ -41,27 +41,31 @@ export const useCategoryList = (
   })
 }
 
-const createCategory = async (productData: Category): Promise<void> => {
+const createCategory = async (productData: CategoryType): Promise<void> => {
   await ERDEAxios.post('/categories', productData)
 }
 
 export const useCreateCategory = (): UseMutationResult<
   void,
   Error,
-  Category
+  CategoryType
 > => {
-  return useMutation<void, Error, Category>({
+  return useMutation<void, Error, CategoryType>({
     mutationFn: createCategory,
     retry: false
   })
 }
 
-const editCategory = async (productData: Category): Promise<void> => {
+const editCategory = async (productData: CategoryType): Promise<void> => {
   await ERDEAxios.patch('/categories', productData)
 }
 
-export const useEditCategory = (): UseMutationResult<void, Error, Category> => {
-  return useMutation<void, Error, Category>({
+export const useEditCategory = (): UseMutationResult<
+  void,
+  Error,
+  CategoryType
+> => {
+  return useMutation<void, Error, CategoryType>({
     mutationFn: editCategory,
     retry: false
   })
