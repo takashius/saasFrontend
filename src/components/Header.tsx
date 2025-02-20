@@ -39,8 +39,8 @@ const Header: React.FC<HeaderProps> = ({
         />
         <Dropdown overlay={<UserMenu />}>
           <Avatar
-            icon={user.photo ? undefined : <UserOutlined />}
-            src={user.photo ? user.photo : undefined}
+            icon={user?.photo ? undefined : <UserOutlined />}
+            src={user?.photo ? user.photo : undefined}
             className="cursor-pointer"
           />
         </Dropdown>
