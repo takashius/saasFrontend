@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Modal, Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useCreateCategory, useEditCategory } from '../../api/category'
-import { Category } from 'src/types/category'
+import { CategoryType } from 'src/types/category'
 
 interface AddCategoryModalProps {
   visible: boolean
@@ -10,7 +10,7 @@ interface AddCategoryModalProps {
   onEdit: (values: any) => void
   onCancel: () => void
   isEdit?: boolean
-  initialValues?: Category
+  initialValues?: CategoryType
 }
 
 const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ visible, onCreate, onEdit, onCancel, isEdit = false, initialValues }) => {
