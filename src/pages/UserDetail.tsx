@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Form, Input, Button, Upload, Avatar, Card, Row, Col, Tag } from 'antd'
+import { Form, Input, Button, Upload, Avatar, Card, Row, Col, Tag, message } from 'antd'
 import {
   CrownOutlined,
   AppstoreOutlined,
@@ -17,17 +17,21 @@ import {
   GlobalOutlined
 } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import { useRoles, useUserDetail } from '../api/users'
+import { useRoles, useUserDetail, useEditUser } from '../api/users'
 import { useParams } from 'react-router-dom'
+import { useUploadImageProfile } from '../api/auth'
+import { getErrorMessage } from '../utils/GetMessage'
 
 const UserEditForm = () => {
   const { id } = useParams<{ id: string }>()
-  const { data: userData } = useUserDetail(id!)
+  const { data: userData, refetch } = useUserDetail(id!)
   const [form] = Form.useForm()
   const { t } = useTranslation()
   const { data: roles, isLoading: rolesLoading } = useRoles()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedRoles, setSelectedRoles] = useState<string[]>([])
+  const uploadImageMutation = useUploadImageProfile()
+  const updateUserMutation = useEditUser()
 
   const moduleIcons: Record<string, React.ReactNode> = {
     SUPER_ADMIN: <CrownOutlined className="text-yellow-500" />,
@@ -53,7 +57,28 @@ const UserEditForm = () => {
   }, [userData, form])
 
   const handleSubmit = () => {
-
+    form
+      .validateFields()
+      .then(values => {
+        const userData: any = {
+          _id: id,
+          name: values.name,
+          lastName: values.lastName,
+          phone: values.phone,
+          bio: values.bio,
+          address: values.address,
+          role: selectedRoles,
+        }
+        updateUserMutation.mutate(userData, {
+          onSuccess: () => {
+            message.success(`user updated success`)
+          },
+          onError: (error: any) => {
+            const errorMessage: string = getErrorMessage(error)
+            message.error(errorMessage)
+          }
+        })
+      })
   }
 
   const getModuleIcon = (roleName: string) => {
@@ -87,12 +112,26 @@ const UserEditForm = () => {
     const newRoles = currentRoles.includes(roleId)
       ? currentRoles.filter((id: string) => id !== roleId)
       : [...currentRoles, roleId]
-
-    // Actualizar ambos
     setSelectedRoles(newRoles)
     form.setFieldsValue({ roles: newRoles })
   }
 
+  const handlePhotoChange = (info: any) => {
+    uploadImageMutation.mutate({
+      image: info.file,
+      imageType: 'photo',
+      userId: userData?._id!
+    }, {
+      onSuccess: () => {
+        message.success(`Photo updated success`)
+        refetch()
+      },
+      onError: (error: any) => {
+        const errorMessage: string = getErrorMessage(error)
+        message.error(errorMessage)
+      }
+    })
+  }
   return (
     <div className="p-4">
       <Form
@@ -100,7 +139,7 @@ const UserEditForm = () => {
         layout="vertical"
         onFinish={handleSubmit}
       >
-        <Card title={t('CompanySelection.title')} bordered={false} className='mb-4'>
+        <Card title={t('ProfileSettings.userEdit')} bordered={false} className='mb-4'>
           <div className="mb-8 text-center">
             <div className="relative inline-block">
               <Avatar
@@ -111,9 +150,11 @@ const UserEditForm = () => {
               <div className="absolute bottom-0 right-0">
                 <Upload
                   showUploadList={false}
-                // Implementa tu lógica de upload aquí
+                  listType="picture"
+                  beforeUpload={() => { return false }}
+                  onChange={handlePhotoChange}
                 >
-                  <Button shape="circle" icon={<UploadOutlined />} />
+                  <Button icon={<UploadOutlined />} loading={uploadImageMutation.isPending}></Button>
                 </Upload>
               </div>
             </div>
@@ -123,22 +164,22 @@ const UserEditForm = () => {
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="name"
-                label={t('name')}
-                rules={[{ required: true }]}
+                label={t('register.name')}
+                rules={[{ required: true, message: t('register.nameRequired') }]}
               >
                 <Input className="w-full" />
               </Form.Item>
 
               <Form.Item
                 name="email"
-                label={t('email')}
+                label={t('register.email')}
                 rules={[{ type: 'email' }]}
               >
-                <Input className="w-full" />
+                <Input className="w-full" disabled={true} />
               </Form.Item>
               <Form.Item
                 name="address"
-                label={t('address')}
+                label={t('ProfileSettings.address')}
               >
                 <Input.TextArea rows={3} />
               </Form.Item>
@@ -146,20 +187,20 @@ const UserEditForm = () => {
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="lastName"
-                label={t('lastName')}
+                label={t('ProfileSettings.lastname')}
               >
                 <Input className="w-full" />
               </Form.Item>
               <Form.Item
                 name="phone"
-                label={t('phone')}
+                label={t('GeneralSettings.phone')}
               >
                 <Input className="w-full" />
               </Form.Item>
 
               <Form.Item
                 name="bio"
-                label={t('bio')}
+                label={t('ProfileSettings.bio')}
               >
                 <Input.TextArea rows={3} />
               </Form.Item>
@@ -169,26 +210,27 @@ const UserEditForm = () => {
             <Button
               type="primary"
               htmlType="submit"
+              loading={updateUserMutation.isPending}
               className="bg-blue-600 hover:bg-blue-700"
             >
-              {t('updateProfile')}
+              {t('ProfileSettings.updateUser')}
             </Button>
           </div>
         </Card>
         <Card
-          title={t('roleManagement')}
+          title={t('ProfileSettings.roleManagement')}
           bordered={false}
           className="mt-4 shadow-lg"
           extra={
             <Input.Search
-              placeholder={t('searchRoles')}
+              placeholder={t('ProfileSettings.searchRoles')}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-64"
             />
           }
         >
           <div className="mb-4">
-            <span className="font-semibold text-gray-600">{t('selectedRoles')}:</span>
+            <span className="font-semibold text-gray-600">{t('ProfileSettings.selectedRoles')}:</span>
             <div className="flex flex-wrap gap-2 mt-2">
               {selectedRoles.map((roleId: string) => {
                 const role = roles?.find(r => r._id === roleId)
@@ -242,11 +284,13 @@ const UserEditForm = () => {
                             <h3 className="font-semibold text-lg mb-1">{role.name}</h3>
                             <p className="text-gray-600 text-sm">{role.description}</p>
                             <div className="mt-2">
-                              <Tag color={selectedRoles.includes(role._id) ? 'blue' : 'default'}>
-                                {selectedRoles.includes(role._id)
-                                  ? t('selected')
-                                  : t('clickToSelect')}
-                              </Tag>
+                              {!role.disabled &&
+                                <Tag color={selectedRoles.includes(role._id) ? 'blue' : 'default'}>
+                                  {selectedRoles.includes(role._id)
+                                    ? t('selected')
+                                    : t('ProfileSettings.clickToSelect')}
+                                </Tag>
+                              }
                             </div>
                           </div>
                         </div>

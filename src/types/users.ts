@@ -24,6 +24,8 @@ export interface UserForm {
   phone: String
   password: String
   email: String
+  photo: any
+  role: any
 }
 
 export interface Role {
@@ -34,7 +36,7 @@ export interface Role {
 }
 
 export interface userDetail extends UserForm {
-  _id?: String
+  _id?: string
   photo: string
   banner: string
   bio: string

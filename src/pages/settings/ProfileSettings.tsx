@@ -4,6 +4,7 @@ import { UploadOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useUploadImageProfile, useAccount, useUpdateProfile } from '../../api/auth'
 import { useAuth } from '../../context/AuthContext'
+import { getErrorMessage } from '../../utils/GetMessage'
 
 const ProfileSettings: React.FC = () => {
   const { t } = useTranslation()
@@ -47,17 +48,7 @@ const ProfileSettings: React.FC = () => {
             message.success(t('saveSuccess'))
           },
           onError: () => {
-            let errorMessage: string = ''
-
-            if (typeof updateMutation.error === 'string') {
-              errorMessage = updateMutation.error
-            } else if (updateMutation.error instanceof Error) {
-              errorMessage = updateMutation.error.message
-            } else if (typeof updateMutation.error === 'object' && updateMutation.error !== null) {
-              const errorObject = updateMutation.error as Record<string, string>
-              const firstErrorKey = Object.keys(errorObject)[0]
-              errorMessage = errorObject[firstErrorKey]
-            }
+            const errorMessage: string = getErrorMessage(updateMutation.error)
             message.error(errorMessage)
           }
         })
@@ -119,7 +110,7 @@ const ProfileSettings: React.FC = () => {
               </Form.Item>
               <Form.Item
                 name="phone"
-                label={t('AddClientModal.phone')}
+                label={t('GeneralSettings.phone')}
               >
                 <Input />
               </Form.Item>
@@ -127,14 +118,14 @@ const ProfileSettings: React.FC = () => {
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 name="lastName"
-                label={t('AddClientModal.lastname')}
+                label={t('ProfileSettings.lastname')}
                 rules={[{ required: true, message: t('AddClientModal.validationLastname') }]}
               >
                 <Input />
               </Form.Item>
               <Form.Item
                 name="email"
-                label={t('AddClientModal.email')}
+                label={t('register.email')}
 
               >
                 <Input disabled={true} />

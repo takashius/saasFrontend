@@ -12,6 +12,7 @@
   "confirmCancelText": "No",
   "create": "Crear",
   "cancel": "Cancelar",
+  "selected": "Seleccionado",
   "date": "Fecha",
   "global": {
     "noData": "No hay datos",
@@ -183,9 +184,16 @@
     "imageTitle": "Imagenes",
     "photo": "Foto",
     "profile": "Perfil",
-    "bio": "Biografia",
+    "bio": "Biografía",
     "address": "Dirección",
-    "password": "Cambiar contraseña"
+    "password": "Cambiar contraseña",
+    "lastname": "Apellido",
+    "updateUser": "Actualizar usuario",
+    "userEdit": "Editar usuario",
+    "roleManagement": "Gestión de roles",
+    "searchRoles": "Buscar roles",
+    "selectedRoles": "Roles seleccionados",
+    "clickToSelect": "Click para seleccionar"
   },
   "Category": {
     "title": "Categorías",

@@ -35,6 +35,7 @@ export interface Login {
 export interface Image {
   image: any
   imageType: string
+  userId?: string
 }
 
 export const useLogin = (): UseMutationResult<
@@ -147,6 +148,10 @@ export const useUploadImageProfile = () => {
       localStorage.setItem('contentType', 'true')
       var formData = new FormData()
       formData.append('image', data.image)
+      if (data.userId) {
+        formData.append('userId', data.userId)
+        return ERDEAxios.post('/user/uploadUserImage', formData)
+      }
       if (data.imageType === 'photo') {
         return ERDEAxios.post('/user/upload', formData)
       } else {

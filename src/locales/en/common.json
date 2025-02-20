@@ -12,6 +12,7 @@
   "confirmCancelText": "No",
   "create": "Create",
   "cancel": "Cancel",
+  "selected": "Selected",
   "date": "Date",
   "global": {
     "noData": "No data available",
@@ -174,6 +175,22 @@
       "cyan": "Cyan",
       "gray": "Gray"
     }
+  },
+  "ProfileSettings": {
+    "base": "Basic Data",
+    "imageTitle": "Images",
+    "photo": "Photo",
+    "profile": "Profile",
+    "bio": "Biography",
+    "address": "Address",
+    "password": "Change password",
+    "lastname": "Lastname",
+    "updateUser": "Update User",
+    "userEdit": "User Edit",
+    "roleManagement": "Role Management",
+    "searchRoles": "Search roles",
+    "selectedRoles": "Selected roles",
+    "clickToSelect": "Click to select"
   },
   "Category": {
     "title": "Categories"
