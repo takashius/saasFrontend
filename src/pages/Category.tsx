@@ -4,14 +4,14 @@ import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant
 import AddCategoryModal from '../components/modals/AddCategoryModal'
 import { useTranslation } from 'react-i18next'
 import { useDeleteCategory, useCategoryList } from '../api/category'
-import { Category } from 'src/types/category'
+import { CategoryType } from 'src/types/category'
 
 const Category = () => {
   const { t } = useTranslation()
   const [searchText, setSearchText] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [mobilePage, setMobilePage] = useState(1)
-  const [mobileData, setMobileData] = useState<Category[]>([])
+  const [mobileData, setMobileData] = useState<CategoryType[]>([])
   const loaderRef = useRef(null)
   const [modalVisible, setModalVisible] = useState(false)
   const [isEdit, setIsEdit] = useState(false)

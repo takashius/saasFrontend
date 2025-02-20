@@ -1,4 +1,4 @@
-export interface Category {
+export interface CategoryType {
   name: string
   description: string
   image: string
@@ -7,7 +7,7 @@ export interface Category {
 }
 
 export interface CategoryListResponse {
-  results: Category[]
+  results: CategoryType[]
   totalCategories: number
   totalPages: number
   currentPage: number
