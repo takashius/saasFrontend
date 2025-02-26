@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
+import { RoleSimple } from '../types/users'
 
 interface AuthContextType {
   user: any
@@ -6,6 +7,8 @@ interface AuthContextType {
   login: (userData: any) => void
   logout: () => void
   getUser: () => void
+  getRoles: () => void
+  hasRole: (roleNames: string[]) => boolean
   updatePhoto: (photoUrl: string) => void
 }
 
@@ -17,14 +20,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = (userData: any) => {
     setUser(userData)
-    localStorage.setItem('Token', userData.token)
-    localStorage.setItem('UserData', JSON.stringify(userData))
+    const { token, role, ...userDataWithoutTokenAndRole } = userData
+    localStorage.setItem('Token', token)
+    localStorage.setItem('Roles', JSON.stringify(role))
+    localStorage.setItem('UserData', JSON.stringify(userDataWithoutTokenAndRole))
   }
 
   const logout = () => {
     setUser(null)
     localStorage.removeItem('Token')
     localStorage.removeItem('UserData')
+    localStorage.removeItem('Roles')
   }
 
   const getUser = (): any => {
@@ -35,6 +41,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return null
   }
 
+  const getRoles = (): any => {
+    const userRoles = localStorage.getItem('Roles')
+    if (userRoles) {
+      return JSON.parse(userRoles)
+    }
+    return null
+  }
+
+  const hasRole = (roleNames: string[]) => {
+    const userRoles = getRoles()
+    roleNames.push('SUPER_ADMIN')
+    return userRoles.some((role: RoleSimple) => roleNames.includes(role.name))
+  };
+
   const updatePhoto = (photoUrl: string) => {
     const updatedUser = { ...user, photo: photoUrl };
     setUser(updatedUser);
@@ -42,7 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, getUser, updatePhoto }}>
+    <AuthContext.Provider value={{ user, token, login, logout, getUser, getRoles, hasRole, updatePhoto }}>
       {children}
     </AuthContext.Provider>
   )

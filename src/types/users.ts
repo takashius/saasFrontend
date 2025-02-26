@@ -28,9 +28,12 @@ export interface UserForm {
   role: any
 }
 
-export interface Role {
+export interface RoleSimple {
   _id: string
   name: string
+}
+
+export interface Role extends RoleSimple {
   description: string
   disabled: boolean
 }

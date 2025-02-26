@@ -24,7 +24,19 @@ const Login: React.FC = () => {
   }, [])
 
   const onFinish = (values: any) => {
-    loginQuery.mutate({ email: values.username, password: values.password })
+    loginQuery.mutate({ email: values.username, password: values.password }, {
+      onSuccess(data) {
+        login(data)
+        navigate('/')
+      },
+      onError(error) {
+        const errorMessage: string = getErrorMessage(error)
+        messageApi.open({
+          type: 'error',
+          content: `${errorMessage}`,
+        })
+      },
+    })
     if (values.remember) {
       localStorage.setItem('email', values.username)
     } else {
@@ -42,23 +54,6 @@ const Login: React.FC = () => {
       localStorage.removeItem('registerSuccess')
     }
   }, [])
-
-  useEffect(() => {
-    if (loginQuery.isSuccess) {
-      login(loginQuery.data)
-      navigate('/')
-    }
-  }, [loginQuery.isSuccess, login, navigate])
-
-  useEffect(() => {
-    if (loginQuery.error) {
-      const errorMessage: string = getErrorMessage(loginQuery.error)
-      messageApi.open({
-        type: 'error',
-        content: `${errorMessage}`,
-      })
-    }
-  }, [loginQuery.error, messageApi])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
