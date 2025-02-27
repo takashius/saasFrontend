@@ -4,8 +4,9 @@ import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant
 import AddCategoryModal from '../components/modals/AddCategoryModal'
 import { useTranslation } from 'react-i18next'
 import { useDeleteUser, useUserList } from '../api/users'
-import { userBase } from 'src/types/users'
-import { Link } from 'react-router-dom'
+import { userBase } from '../types/users'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const UserList = () => {
   const { t } = useTranslation()
@@ -21,6 +22,14 @@ const UserList = () => {
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const { data, isLoading, isSuccess, error, refetch } = useUserList(currentPage, searchText)
   const deleteUserMutation = useDeleteUser()
+  const { hasRole } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!hasRole(["PROV_ADMIN", "ROLE_USER_LIST"])) {
+      navigate('/')
+    }
+  }, [])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -92,20 +101,24 @@ const UserList = () => {
       key: 'actions',
       render: (record: any) => (
         <Button.Group>
-          <Link to={`/users/${record._id}`}> <Button icon={<EditOutlined />} type='primary' /> </Link>
-          <Popconfirm
-            title={t('Category.deleteConfirmTitle')}
-            description={t('Category.deleteConfirmDescription')}
-            onConfirm={() => handleDelete(record._id)}
-            okText={t('confirmOkText')}
-            cancelText={t('confirmCancelText')}
-          >
-            <Button
-              icon={<DeleteOutlined />} className="ml-2"
-              type='primary'
-              loading={loadingId === record._id && deleteUserMutation.isPending}
-            />
-          </Popconfirm>
+          {hasRole(["PROV_ADMIN", "ROLE_USER_EDIT"]) && (
+            <Link to={`/users/${record._id}`}> <Button icon={<EditOutlined />} type='primary' /> </Link>
+          )}
+          {hasRole(["PROV_ADMIN", "ROLE_USER_DELETE"]) && (
+            <Popconfirm
+              title={t('Category.deleteConfirmTitle')}
+              description={t('Category.deleteConfirmDescription')}
+              onConfirm={() => handleDelete(record._id)}
+              okText={t('confirmOkText')}
+              cancelText={t('confirmCancelText')}
+            >
+              <Button
+                icon={<DeleteOutlined />} className="ml-2"
+                type='primary'
+                loading={loadingId === record._id && deleteUserMutation.isPending}
+              />
+            </Popconfirm>
+          )}
         </Button.Group>
       )
     }
@@ -178,13 +191,15 @@ const UserList = () => {
           prefix={<SearchOutlined />}
           className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0"
         />
-        <Button type="primary" icon={<PlusOutlined />} className={`w-full md:w-auto`} onClick={() => {
-          setModalVisible(true);
-          setIsEdit(false);
-          setInitialValues(null)
-        }}>
-          {t('Category.addButton')}
-        </Button>
+        {hasRole(["PROV_ADMIN", "ROLE_USER_CREATE"]) && (
+          <Button type="primary" icon={<PlusOutlined />} className={`w-full md:w-auto`} onClick={() => {
+            setModalVisible(true);
+            setIsEdit(false);
+            setInitialValues(null)
+          }}>
+            {t('Category.addButton')}
+          </Button>
+        )}
       </div>
       <div className="hidden md:block">
         <Table
@@ -213,20 +228,24 @@ const UserList = () => {
                     <p><strong>{t('register.phone')}: </strong>{item.phone}</p>
                   }
                   <div className='mt-4'>
-                    <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(item)} />
-                    <Popconfirm
-                      title={t('Category.deleteConfirmTitle')}
-                      description={t('Category.deleteConfirmDescription')}
-                      onConfirm={() => handleDelete(item._id!)}
-                      okText={t('home.confirmOkText')}
-                      cancelText={t('home.confirmCancelText')}
-                    >
-                      <Button
-                        icon={<DeleteOutlined />} className="ml-2"
-                        type='primary'
-                        loading={loadingId === item._id && deleteUserMutation.isPending}
-                      />
-                    </Popconfirm>
+                    {hasRole(["PROV_ADMIN", "ROLE_USER_EDIT"]) && (
+                      <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(item)} />
+                    )}
+                    {hasRole(["PROV_ADMIN", "ROLE_USER_DELETE"]) && (
+                      <Popconfirm
+                        title={t('Category.deleteConfirmTitle')}
+                        description={t('Category.deleteConfirmDescription')}
+                        onConfirm={() => handleDelete(item._id!)}
+                        okText={t('home.confirmOkText')}
+                        cancelText={t('home.confirmCancelText')}
+                      >
+                        <Button
+                          icon={<DeleteOutlined />} className="ml-2"
+                          type='primary'
+                          loading={loadingId === item._id && deleteUserMutation.isPending}
+                        />
+                      </Popconfirm>
+                    )}
                   </div>
                 </Card>
               )}
