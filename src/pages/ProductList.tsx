@@ -5,6 +5,8 @@ import AddProductModal from '../components/modals/AddProductModal'
 import { useTranslation } from 'react-i18next'
 import { useDeleteProduct, useProductList } from '../api/products'
 import { Product } from 'src/types'
+import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const ProductList = () => {
   const { t } = useTranslation()
@@ -19,6 +21,14 @@ const ProductList = () => {
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const { data, isLoading, isSuccess, error, refetch } = useProductList(currentPage, searchText)
   const deleteProductMutation = useDeleteProduct()
+  const { hasRole } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!hasRole(["ROLE_PRODUCTS_LIST"])) {
+      navigate('/')
+    }
+  }, [])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -87,20 +97,24 @@ const ProductList = () => {
       key: 'actions',
       render: (record: any) => (
         <Button.Group>
-          <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(record)} />
-          <Popconfirm
-            title={t('ProductList.deleteConfirmTitle')}
-            description={t('ProductList.deleteConfirmDescription')}
-            onConfirm={() => handleDelete(record._id)}
-            okText={t('confirmOkText')}
-            cancelText={t('confirmCancelText')}
-          >
-            <Button
-              icon={<DeleteOutlined />} className="ml-2"
-              type='primary'
-              loading={loadingId === record._id && deleteProductMutation.isPending}
-            />
-          </Popconfirm>
+          {hasRole(["ROLE_PRODUCTS_EDIT"]) && (
+            <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(record)} />
+          )}
+          {hasRole(["ROLE_PRODUCTS_DELETE"]) && (
+            <Popconfirm
+              title={t('ProductList.deleteConfirmTitle')}
+              description={t('ProductList.deleteConfirmDescription')}
+              onConfirm={() => handleDelete(record._id)}
+              okText={t('confirmOkText')}
+              cancelText={t('confirmCancelText')}
+            >
+              <Button
+                icon={<DeleteOutlined />} className="ml-2"
+                type='primary'
+                loading={loadingId === record._id && deleteProductMutation.isPending}
+              />
+            </Popconfirm>
+          )}
         </Button.Group>
       )
     }
@@ -163,13 +177,15 @@ const ProductList = () => {
           prefix={<SearchOutlined />}
           className="w-full md:w-1/2 lg:w-1/3 mb-2 md:mb-0"
         />
-        <Button type="primary" icon={<PlusOutlined />} className={`w-full md:w-auto`} onClick={() => {
-          setModalVisible(true);
-          setIsEdit(false);
-          setInitialValues(null)
-        }}>
-          {t('ProductList.addProductButton')}
-        </Button>
+        {hasRole(["ROLE_PRODUCTS_CREATE"]) && (
+          <Button type="primary" icon={<PlusOutlined />} className={`w-full md:w-auto`} onClick={() => {
+            setModalVisible(true);
+            setIsEdit(false);
+            setInitialValues(null)
+          }}>
+            {t('ProductList.addProductButton')}
+          </Button>
+        )}
       </div>
       <div className="hidden md:block">
         <Table
@@ -199,20 +215,24 @@ const ProductList = () => {
                   }
                   <p><strong>{t('AddProductModal.price')}: </strong>{item.price}</p>
                   <div className='mt-4'>
-                    <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(item)} />
-                    <Popconfirm
-                      title={t('quotationDetails.deleteConfirmTitle')}
-                      description={t('quotationDetails.deleteConfirmDescription')}
-                      onConfirm={() => handleDelete(item._id)}
-                      okText={t('home.confirmOkText')}
-                      cancelText={t('home.confirmCancelText')}
-                    >
-                      <Button
-                        icon={<DeleteOutlined />} className="ml-2"
-                        type='primary'
-                        loading={loadingId === item._id && deleteProductMutation.isPending}
-                      />
-                    </Popconfirm>
+                    {hasRole(["ROLE_PRODUCTS_EDIT"]) && (
+                      <Button icon={<EditOutlined />} type='primary' onClick={() => handleEdit(item)} />
+                    )}
+                    {hasRole(["ROLE_PRODUCTS_DELETE"]) && (
+                      <Popconfirm
+                        title={t('quotationDetails.deleteConfirmTitle')}
+                        description={t('quotationDetails.deleteConfirmDescription')}
+                        onConfirm={() => handleDelete(item._id)}
+                        okText={t('home.confirmOkText')}
+                        cancelText={t('home.confirmCancelText')}
+                      >
+                        <Button
+                          icon={<DeleteOutlined />} className="ml-2"
+                          type='primary'
+                          loading={loadingId === item._id && deleteProductMutation.isPending}
+                        />
+                      </Popconfirm>
+                    )}
                   </div>
                 </Card>
               )}
